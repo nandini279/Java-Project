@@ -1,0 +1,246 @@
+﻿
+
+1. //cancel booking method
+
+
+package hcltech.com.javaproject;
+
+import java.util.Scanner;
+
+public class Bookingcancel {
+    private int bookedSeats;
+
+    public Bookingcancel() {
+        this.bookedSeats = 0;
+    }
+
+    public void bookSeats(int seats) {
+        bookedSeats += seats;
+        System.out.println(seats + " seat(s) booked successfully. Total booked seats: " + bookedSeats);
+    }
+
+    public void cancelBooking(int seats) {
+        if (bookedSeats >= seats) {
+            bookedSeats -= seats;
+            System.out.println(seats + " seat(s) cancelled successfully. Remaining booked seats: " + bookedSeats);
+        } else {
+            System.out.println("Cannot cancel " + seats + " seat(s). Only " + bookedSeats + " seat(s) booked.");
+        }
+    }
+
+    public static void main(String[] args) {
+        Bookingcancel trainBookingSystem = new Bookingcancel();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\n1. Book seats");
+            System.out.println("2. Cancel booking");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter number of seats to book: ");
+                    int seatsToBook = scanner.nextInt();
+                    trainBookingSystem.bookSeats(seatsToBook);
+                    break;
+                case 2:
+                    System.out.print("Enter number of seats to cancel: ");
+                    int seatsToCancel = scanner.nextInt();
+                    trainBookingSystem.cancelBooking(seatsToCancel);
+                    break;
+                case 3:
+                    System.out.println("Exiting program...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+2. //loutUser method
+
+
+package hcltech.com.javaproject;
+
+import java.util.Scanner;
+
+public class Logoutuser {
+    private boolean loggedIn;
+
+    public Logoutuser() {
+        this.loggedIn = false;
+    }
+
+    public void loginUser(String username, String password) {
+        // Simulate login logic (e.g., check username and password against database)
+        if ("admin".equals(username) && "password".equals(password)) {
+            loggedIn = true;
+            System.out.println("Login successful.");
+        } else {
+            System.out.println("Invalid username or password.");
+        }
+    }
+
+    public void logoutUser() {
+        if (loggedIn) {
+            loggedIn = false;
+            System.out.println("Logged out successfully.");
+        } else {
+            System.out.println("No user logged in.");
+        }
+    }
+
+    public static void main(String[] args) {
+        Logoutuser userAuthSystem = new Logoutuser();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\n1. Login");
+            System.out.println("2. Logout");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline character after reading integer
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter username: ");
+                    String username = scanner.nextLine();
+                    System.out.print("Enter password: ");
+                    String password = scanner.nextLine();
+                    userAuthSystem.loginUser(username, password);
+                    break;
+                case 2:
+                    userAuthSystem.logoutUser();
+                    break;
+                case 3:
+                    System.out.println("Exiting program...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+            }
+        }
+    }
+}
+
+
+
+
+
+3. //display ticket details
+
+
+
+package hcltech.com.javaproject;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
+import java.util.Scanner;
+
+public class TicketDetails {
+    private int total; // Placeholder for total amount (not specified in the provided code)
+
+    public TicketDetails() {
+        // Initialize any necessary variables or setup
+        this.total = 0; // Initialize total amount
+    }
+
+    public void ticketDetails(User currentUser, int bookedSeats, String departureStation, String destinationStation) {
+        System.out.println("----------------Ticket Details--------------------");
+        // Username
+        System.out.println("Username: " + currentUser.getUsername()); // Assuming User class has getUsername() method
+        // PNR number
+        System.out.println("PNR Number: " + randomNum10());
+        // Ticket number
+        System.out.println("Ticket NO: " + randomNum5());
+        // Departure station
+        System.out.println("Your departure: " + departureStation);
+        // Destination station
+        System.out.println("Your destination: " + destinationStation);
+        // Number of tickets booked
+        System.out.println("Number of Tickets booked: " + bookedSeats);
+        // Amount paid (assuming it is stored in 'total' variable)
+        System.out.println("Amount Paid: " + total);
+        // Booking date and time
+        System.out.println("Booking Date and Time: " + formatDateTime(LocalDateTime.now()));
+        // Estimated arrival date and time (example duration of 15 hours)
+        int journeyDurationHours = 15;
+        System.out.println("Estimated Arrival Date and Time: " + formatDateTime(LocalDateTime.now().plusHours(journeyDurationHours)));
+    }
+
+    private String formatDateTime(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dateTime.format(formatter);
+    }
+
+    public static String randomNum10() {
+        Random random = new Random();
+
+        // Generate first 3 digits
+        int firstPart = random.nextInt(1000); // Generate a number between 0 and 999
+        String firstPartString = String.format("%03d", firstPart); // Ensure 3-digit format
+
+        // Generate last 7 digits
+        long secondPart = random.nextInt(10000000); // Generate a number between 0 and 9999999
+        String secondPartString = String.format("%07d", secondPart); // Ensure 7-digit format
+
+        // Concatenate parts with a hyphen
+        String randomNumber = firstPartString + "-" + secondPartString;
+
+        return randomNumber;
+    }
+
+    public static int randomNum5() {
+        int min = 10000; // minimum 5-digit number (10^4)
+        int max = 99999; // maximum 5-digit number (10^5 - 1)
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(max - min + 1) + min;
+
+        return randomNumber;
+    }
+
+    public static void main(String[] args) {
+        TicketDetails ticketBookingSystem = new TicketDetails();
+        Scanner scanner = new Scanner(System.in);
+
+        // Example usage: Prompting user for booking details
+        System.out.print("Enter your username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Enter number of seats to book: ");
+        int bookedSeats = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character
+
+        System.out.print("Enter departure station: ");
+        String departureStation = scanner.nextLine();
+
+        System.out.print("Enter destination station: ");
+        String destinationStation = scanner.nextLine();
+
+        // Assuming you have a User class with username field
+        User currentUser = new User(username); // Replace 'User' with actual User class
+
+        // Call ticketDetails method with user input
+        ticketBookingSystem.ticketDetails(currentUser, bookedSeats, departureStation, destinationStation);
+
+        scanner.close();
+    }
+}
+
